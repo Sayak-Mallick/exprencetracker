@@ -246,12 +246,13 @@ function App() {
       <h1>Expense Tracker</h1>
 
       {/* Wallet Section */}
-      <div className="wallet-section">
-        <h2>Wallet Balance: ${walletBalance.toFixed(2)}</h2>
+      <div className="wallet-section" data-testid="wallet-section">
+        <h2 data-testid="wallet-balance">Wallet Balance: ${walletBalance.toFixed(2)}</h2>
         <button
           type="button"
           className="add-income-btn"
           onClick={() => setIsIncomeModalOpen(true)}
+          data-testid="add-income-button"
         >
           + Add Income
         </button>
@@ -259,13 +260,14 @@ function App() {
           type="button"
           className="add-expense-btn"
           onClick={() => setIsExpenseModalOpen(true)}
+          data-testid="add-expense-button"
         >
           + Add Expense
         </button>
       </div>
 
       {/* Expense Summary Section */}
-      <div className="summary-section">
+      <div className="summary-section" data-testid="expense-summary-section">
         <div className="charts-container">
           {/* Pie Chart */}
           <div className="chart-box">
@@ -320,20 +322,20 @@ function App() {
       <div className="expense-list-section">
         <h2>Expense History</h2>
         {expenses.length > 0 ? (
-          <div className="expense-list">
+          <div className="expense-list" data-testid="transaction-list">
             {expenses.map(expense => (
-              <div key={expense.id} className="expense-item">
+              <div key={expense.id} className="expense-item" data-testid={`expense-item-${expense.category.toLowerCase()}`}>
                 <div className="expense-details">
                   <h3>{expense.title}</h3>
-                  <p className="expense-category">{expense.category}</p>
+                  <p className="expense-category" data-testid={`category-${expense.category.toLowerCase()}`}>{expense.category}</p>
                   <p className="expense-date">{expense.date}</p>
-                  <p className="expense-amount">${parseFloat(expense.price).toFixed(2)}</p>
+                  <p className="expense-amount" data-testid="expense-amount">${parseFloat(expense.price).toFixed(2)}</p>
                 </div>
                 <div className="expense-actions">
-                  <button onClick={() => handleEditExpense(expense)} className="edit-btn">
+                  <button onClick={() => handleEditExpense(expense)} className="edit-btn" aria-label="Edit expense">
                     <FaEdit />
                   </button>
-                  <button onClick={() => handleDeleteExpense(expense)} className="delete-btn">
+                  <button onClick={() => handleDeleteExpense(expense)} className="delete-btn" aria-label="Delete expense">
                     <FaTrash />
                   </button>
                 </div>
