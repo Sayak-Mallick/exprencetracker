@@ -18,30 +18,34 @@ function App() {
   const [transactionData, setTransactionData] = useState(dummyData);
   const initialRender = useRef(true);
 
-  useEffect(()=>{
-    if(initialRender.current)  onLoad();
-
-    return(() => {
-      initialRender.current = false;
-    })
+  useEffect(() => {
+    // Load data from localStorage on initial render
+    onLoad();
+    // Mark initial render as complete
+    initialRender.current = false;
   }, [])
 
-  useEffect(()=> {
-    //save data to local storage and if it is initial render skip saving
-    if(!initialRender.current) localStorage.setItem("allData", JSON.stringify({money, transactionData}));
+  useEffect(() => {
+    // Save data to localStorage only after initial render
+    if (!initialRender.current) {
+      localStorage.setItem("allData", JSON.stringify({money, transactionData}));
+    }
   }, [money, transactionData])
 
   //functions
   const onLoad = () => {
     //load data from local storage if present
     const localData = localStorage.getItem("allData");
-    if(localData){
-      const {money, transactionData} = JSON.parse(localData);
-      setMoney(money);
-      setTransactionData(transactionData);
+    if (localData) {
+      try {
+        const parsedData = JSON.parse(localData);
+        if (parsedData.money) setMoney(parsedData.money);
+        if (parsedData.transactionData) setTransactionData(parsedData.transactionData);
+      } catch (error) {
+        console.error("Error parsing localStorage data:", error);
+      }
     }
   }
-  
 
   return (
     <main className='App'>

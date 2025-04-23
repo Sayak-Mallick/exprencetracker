@@ -5,11 +5,11 @@ import Transactions from '../Transactions/Transactions';
 import TopExpenses from '../TopExpenses/TopExpenses';
 //components
 
-const AppBody = () => {
+const AppBody = ({ transactionData }) => {
     return (
         <div className='AppBody'>
-            <Transactions />
-            <TopExpenses />
+            <Transactions transactionData={transactionData} />
+            <TopExpenses transactionData={transactionData} />
         </div>
     );
 };

@@ -4,11 +4,11 @@ import "./Transactions.css";
 //components
 import TransactionsBody from '../TransactionsBody/TransactionsBody';
 
-const Transactions = () => {
+const Transactions = ({ transactionData }) => {
     return (
         <div className='Transactions'>
             <h2>Recent Transactions</h2>
-            <TransactionsBody />
+            <TransactionsBody transactionData={transactionData} />
         </div>
     );
 };

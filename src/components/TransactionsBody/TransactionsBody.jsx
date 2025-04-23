@@ -7,9 +7,12 @@ import PageNavigateBar from './PageNavigateBar';
 //contexts
 import { TransactionsContext } from '../../Contexts/AllContexts';
 
-const TransactionsBody = () => {
+const TransactionsBody = ({ transactionData: propTransactionData }) => {
     //contexts
-    const [transactionData, setTransactionData] = useContext(TransactionsContext);
+    const [contextTransactionData, setContextTransactionData] = useContext(TransactionsContext);
+    // Use prop data if provided, otherwise use context data
+    const transactionData = propTransactionData || contextTransactionData;
+    
     //states
     const [pages, setPages] = useState({ currentPage: 1, totalPages: 1 })
     //everytime transactionData updates
