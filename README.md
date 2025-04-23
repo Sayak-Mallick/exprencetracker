@@ -1,12 +1,33 @@
-# React + Vite
+# Crio Code-A-Thon Project: Expense Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Screenshot of App](./src/assets/mainScreenshot.png)
 
-Currently, two official plugins are available:
+## The App
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A web application for tracking expenses, allowing users to add, edit, and delete expenses based on category and date, as well as view a summary of their expenses.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Features:
+- App has Wallet Balance which by default is set to 5000.
+- Wallet Balance can be increased.
+- User is not able to spend more than his available wallet balance. It shows an alert if a user tries to do so.
+- User can add new expenses with details like title, amount, category, and date and Wallet Balance updates accordingly.
+- User is able to edit existing expenses and delete expenses.
+- User is able to view a summary of total expenses, categorized by date or type.
+- This persists wallet balance and list of expenses in localStorage so that it should be there upon page refresh.
+- App is built with responsive design for various screen sizes.
+
+## Tech Used
+
+`HTML`
+`CSS`
+`REACT JS`
+
+## NPM library used to built charts
+
+`Recharts`
+
+
+- <a href="https://expense-tracker-psi-ten.vercel.app/" target="_blank">Click here for demo</a>
+
+**Had fun building!** 🚀
