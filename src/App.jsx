@@ -12,10 +12,10 @@ import { dummyData } from './dummyTransactions';
 
 function App() {
   const [money, setMoney] = useState({
-    balance: 3800,
-    expenses: 1200
+    balance: 5000, // Set initial balance to 5000 as per requirements
+    expenses: 0    // Set initial expenses to 0
   })
-  const [transactionData, setTransactionData] = useState(dummyData);
+  const [transactionData, setTransactionData] = useState([]);
   const initialRender = useRef(true);
 
   useEffect(() => {
@@ -28,21 +28,32 @@ function App() {
   useEffect(() => {
     // Save data to localStorage only after initial render
     if (!initialRender.current) {
-      localStorage.setItem("allData", JSON.stringify({money, transactionData}));
+      localStorage.setItem("expenses", JSON.stringify(transactionData));
+      localStorage.setItem("walletBalance", JSON.stringify(money));
     }
   }, [money, transactionData])
 
   //functions
   const onLoad = () => {
     //load data from local storage if present
-    const localData = localStorage.getItem("allData");
-    if (localData) {
+    const expensesData = localStorage.getItem("expenses");
+    const walletData = localStorage.getItem("walletBalance");
+    
+    if (expensesData) {
       try {
-        const parsedData = JSON.parse(localData);
-        if (parsedData.money) setMoney(parsedData.money);
-        if (parsedData.transactionData) setTransactionData(parsedData.transactionData);
+        const parsedExpenses = JSON.parse(expensesData);
+        setTransactionData(parsedExpenses);
       } catch (error) {
-        console.error("Error parsing localStorage data:", error);
+        console.error("Error parsing expenses data:", error);
+      }
+    }
+    
+    if (walletData) {
+      try {
+        const parsedWallet = JSON.parse(walletData);
+        setMoney(parsedWallet);
+      } catch (error) {
+        console.error("Error parsing wallet data:", error);
       }
     }
   }

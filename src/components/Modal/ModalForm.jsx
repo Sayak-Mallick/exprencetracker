@@ -18,7 +18,7 @@ const ModalForm = props => {
     }, [])
     //states
     const [formData, setFormData] = useState({
-        name: "",
+        title: "",
         price: "",
         date: new Date().toISOString().split("T")[0], //gives date in yyyy-mm-dd format
         category: "",
@@ -26,10 +26,9 @@ const ModalForm = props => {
     const [balanceFormData, setBalanceFormData] = useState({income: ""});
     //functions
     const updateFormDataWithExistingData = () => {
-        console.log(existingData)
         const {name, date, amount, category} = existingData;
         setFormData({
-            name: name,
+            title: name,
             price: amount,
             date: date,
             category: category
@@ -41,41 +40,89 @@ const ModalForm = props => {
     }
     const handleSubmit = evt => {
         evt.preventDefault();
-        // Edit Expense
+        
         if(formType === "Add Balance"){
+            if (!balanceFormData.income) {
+                alert("Please enter an income amount");
+                return;
+            }
+            
             setMoney({
                 ...money,
-                balance: money.balance + balanceFormData.income
+                balance: money.balance + Number(balanceFormData.income)
             });
+            
+            // Clear form after submission
+            setBalanceFormData({income: ""});
         }
+        
         if(formType === "Add Expense"){
+            // Validate all fields are filled
+            if (!formData.title || !formData.price || !formData.category || !formData.date) {
+                alert("Please fill in all fields");
+                return;
+            }
+            
             let newExpense = money.expenses + Number(formData.price);
             let newBalance = money.balance - Number(formData.price);
 
             if(newBalance < 0){
-                return alert("Out of balance");
-            }else{
-                let newId = new Date / 1;
-                let newTransaction = {...formData, id: newId};
+                alert("Out of balance");
+                return;
+            } else {
+                let newId = new Date().getTime();
+                let newTransaction = {
+                    name: formData.title,
+                    price: Number(formData.price),
+                    date: formData.date,
+                    category: formData.category,
+                    id: newId
+                };
+                
                 setMoney({balance: newBalance, expenses: newExpense});
                 setTransactionData([...transactionData, newTransaction]);
+                
+                // Clear form after submission
+                setFormData({
+                    title: "",
+                    price: "",
+                    date: new Date().toISOString().split("T")[0],
+                    category: "",
+                });
             }
         }
+        
         if(formType === "Edit Expense"){
+            // Validate all fields are filled
+            if (!formData.title || !formData.price || !formData.category || !formData.date) {
+                alert("Please fill in all fields");
+                return;
+            }
+            
             let newExpense = money.expenses + Number(formData.price) - Number(existingData.amount);
             let newBalance = money.balance - Number(formData.price) + Number(existingData.amount);
 
-            if(newBalance < 0) return alert("Out of balance");
+            if(newBalance < 0) {
+                alert("Out of balance");
+                return;
+            }
             
             //get index of transaction
             const indexOfTransaction = transactionData.findIndex(transaction => existingData.id === transaction.id);
             //store transaction data in new variable
-            const updatedTransaction = {...formData, id: existingData.id};
+            const updatedTransaction = {
+                name: formData.title,
+                price: Number(formData.price),
+                date: formData.date,
+                category: formData.category,
+                id: existingData.id
+            };
             //add that new tranaction at that index with same id
-            transactionData[indexOfTransaction] = updatedTransaction;
+            const updatedTransactions = [...transactionData];
+            updatedTransactions[indexOfTransaction] = updatedTransaction;
 
             setMoney({balance: newBalance, expenses: newExpense});
-            setTransactionData([...transactionData]);
+            setTransactionData(updatedTransactions);
         }
 
         toggleModal();
@@ -86,12 +133,12 @@ const ModalForm = props => {
             <div className='formInputsDiv'>
                 <input 
                 required
-                value={formData.name}
+                value={formData.title}
                 className="formInput" 
                 onChange={handleChange} 
                 placeholder='Title' 
                 type='text' 
-                name='name'
+                name='title'
                 autoFocus
                 />
                 <input 
@@ -104,12 +151,13 @@ const ModalForm = props => {
                 name='price'
                 />
                 <select
+                required
                 value={formData.category} 
                 className="formInput" 
                 onChange={handleChange} 
                 placeholder='Select Category' 
                 name='category'>
-                    <option value={null}>Select Category</option>
+                    <option value="">Select Category</option>
                     <option value="food">Food</option>
                     <option value="entertainment">Entertainment</option>
                     <option value="travel">Travel</option>
@@ -126,6 +174,7 @@ const ModalForm = props => {
             </div>
         )
     } 
+    
     const incomeInputs = () => {
         return (
             <div className='balanceFormInputDiv'>
@@ -142,10 +191,16 @@ const ModalForm = props => {
             </div>
         )
     }
+    
     return (
         <form className='modalForm expensesForm' onSubmit={handleSubmit}>
             {formType === "Add Balance" ? incomeInputs() : expenseAndEditInput()}
-            <FormButtons text={formType} toggleModal={toggleModal}/>
+            <div className="formButtonsContainer">
+                <button type="button" onClick={toggleModal} className="cancelButton">Cancel</button>
+                <button type="submit" className="submitButton">
+                    {formType}
+                </button>
+            </div>
         </form>
     )
 }

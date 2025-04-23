@@ -4,7 +4,9 @@ import "./Navbar.css"
 
 const Navbar = () => {
     return (
-        <nav>Expense Tracker</nav>
+        <nav>
+            <h1>Expense Tracker</h1>
+        </nav>
     );
 };
 

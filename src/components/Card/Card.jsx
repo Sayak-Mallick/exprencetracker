@@ -21,12 +21,13 @@ const Card = props => {
                     ₹{value}
                 </span>
             </span>
-            <Button 
-                text={text === "Expenses" ? "+ Add Expense" : "+ Add Income"}
-                background={text === "Expenses" ? "gradientRed" : "gradientGreen"}
-                buttonSize = "largeButton"
-                clickFunction={toggleModal}
-            />
+            <button 
+                type="button"
+                className={`Button largeButton ${text === "Expenses" ? "gradientRed" : "gradientGreen"}`}
+                onClick={toggleModal}
+            >
+                {text === "Expenses" ? "+ Add Expense" : "+ Add Income"}
+            </button>
             {modalOn ? 
                 <Modal 
                 toggleModal={toggleModal} 
