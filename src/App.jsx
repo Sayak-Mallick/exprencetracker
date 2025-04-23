@@ -30,7 +30,7 @@ const customStyles = {
 // Category options with colors
 const CATEGORIES = [
   { name: 'Food', color: '#FF6384' },
-  { name: 'Transportation', color: '#36A2EB' },
+  { name: 'Travel', color: '#36A2EB' },
   { name: 'Entertainment', color: '#FFCE56' },
   { name: 'Shopping', color: '#4BC0C0' },
   { name: 'Utilities', color: '#9966FF' },
